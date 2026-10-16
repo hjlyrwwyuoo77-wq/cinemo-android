@@ -25,19 +25,20 @@ jobs:
           distribution: temurin
           java-version: "17"
 
-      - name: Install Android SDK
+      - name: Set up Android SDK
         uses: android-actions/setup-android@v3
+        with:
+          packages: |
+            platforms;android-34
+            build-tools;34.0.0
 
-      - name: Install Android SDK packages
-        run: sdkmanager "platforms;android-34" "build-tools;34.0.0"
-
-      - name: Install Gradle and cache dependencies
+      - name: Install Gradle
         uses: gradle/actions/setup-gradle@v4
         with:
           gradle-version: "8.7"
 
-      - name: Build CINEMO debug APK
-        run: gradle :app:assembleDebug --no-daemon
+      - name: Build CINEMO APK
+        run: gradle :app:assembleDebug --no-daemon --stacktrace
 
       - name: Upload CINEMO APK
         uses: actions/upload-artifact@v4
